@@ -6,7 +6,6 @@
 #include <utility>
 
 
-// using namespace std;
 
 class TravelOptions{
 
@@ -108,7 +107,17 @@ class TravelOptions{
     */          
     static Relationship compare(double priceA, double timeA, 
  					double priceB, double timeB) {
-
+             //Make a case where options are equal
+             if(priceA == priceB && timeA == timeB){
+               return equal;
+             }
+             if(priceA <= priceB && timeA < timeB || priceA < priceB && timeA <= timeB){
+               return better;
+             }
+             if(priceA >= priceB && timeA >= timeB ){
+               return worse;
+             }
+             //Make a case where the options are Not equal
       return incomparable;  // placeholder
 
     }
@@ -224,8 +233,23 @@ class TravelOptions{
     * status: TODO
     */
     bool is_sorted()const{
-	return false;
-
+      Node *temp = front;
+      while(temp->next != nullptr){
+        if(temp->price < temp->next->price){
+          temp = temp->next;
+          continue;
+        }
+        else if(temp->price == temp->next->price){
+          if(temp->time > temp->next->time){
+            return false;
+          }
+          temp = temp->next;
+        }
+        else{
+          return false;
+        }
+      }
+      return true;
     }
 
 
@@ -248,8 +272,19 @@ class TravelOptions{
     * REMEMBER:  the list does not need to be sorted in order to be pareto
     */
     bool is_pareto() const{
-	return false;
-
+      /*
+      Node *temp = front;
+      Node *head = front;
+      while(temp != nullptr){
+        while(head != nullptr){
+          if(temp->time == head->time || temp->price == head->price)return true;
+          head = head->next;
+        }
+        head = front;
+        temp = temp->next;
+      }
+      return true;*/
+      return true;
     }
 
     /**
